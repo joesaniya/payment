@@ -1,10 +1,14 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:payment_app/Screens/login/login_screen.dart';
 import 'package:payment_app/Screens/pages/contact.dart';
 import 'package:payment_app/Screens/pages/pay.dart';
+import 'package:payment_app/helpers/dialog_helper.dart';
+import 'package:payment_app/theme/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -90,10 +94,22 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final _advancedDrawerController = AdvancedDrawerController();
 
+    Future<void> _signOut(BuildContext context) async {
+    print('future signout');
+    await FirebaseAuth.instance.signOut();
+    // Navigator.pushAndRemoveUntil(builder: (context) => WelcomePage());
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (route) => false);
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(
-      backdropColor: Colors.grey.shade900,
+      backdropColor:Appcolor.secondary,
+      // backdropColor: Colors.grey.shade900,
       controller: _advancedDrawerController,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
@@ -103,7 +119,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
       childDecoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.shade900,
+            color: Appcolor.secondary,
             blurRadius: 20.0,
             spreadRadius: 5.0,
             offset: Offset(-20.0, 0.0),
@@ -138,87 +154,31 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : Container(
-                width: 80,
-                height: 80,
-                  color: Colors.grey,
-                  // padding: EdgeInsets.symmetric(vertical: 24),
-                  child: GestureDetector(
-                    // onTap: () => _showModalBottomSheet(context),
-                    onTap: () {
-                      print('Code to open file manager');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Container(
-                        //   width: 100,
-                        //   height: 70,
-                        //   getProfileImage();
-                        // ),
-                        // Container(
-                        //   width: 130,
-                        //   height: 130,
-                        //   margin: EdgeInsets.only(bottom: 15),
-                        //   child: CircleAvatar(
-                        //     radius: 100,
-                        //     backgroundColor: Colors.grey,
-                        //     child: ClipOval(
-                        //       child: SizedBox(
-                        //         width: 180.0,
-                        //         height: 180.0,
-                        //         child: (_image != null) ? Image.file(_image,fit: BoxFit.cover):
-                        //         Image.network("https://wallpaper.dog/large/20469131.jpg",fit: BoxFit.cover,),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // decoration: BoxDecoration(
-                        //   color: Colors.grey,
-                        //   borderRadius: BorderRadius.circular(100),
-                        //   // Profile Picture
-                        //   image: DecorationImage(image: AssetImage('assets/images/profile.jpg'), fit: BoxFit.cover),
-                        // ),
-                        // ),
-
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.grey,
-                          child: ClipOval(
-                            child: SizedBox(
-                                width: 80.0,
-                                height: 80.0,
-                                // child: Icon(Icons.account_circle, size: 70)),
-                             child:(user!.photoURL != null)
-                                ? Image.network(
-                                    user!.photoURL.toString(),
-                                    fit: BoxFit.cover,
-                                  )
-                                : CircleAvatar(
-                                    backgroundColor: Colors.yellow,
-                                    child: Text(user!.displayName![0]),
-                                  ),
-                            // Image.network(user.displayName[0])
-
-                            // Text(username[1])
-                            // Image(image: NetworkImage('$username[1])'),
-                            // Image.network("https://wallpaper.dog/large/20469131.jpg",fit: BoxFit.cover,),
-                          ),
-                          )
+              : CircleAvatar(
+                radius: 60,
+                backgroundColor: Colors.grey,
+                child: ClipOval(
+                  child: SizedBox(
+                      width: 80.0,
+                      height: 80.0,
+                      // child: Icon(Icons.account_circle, size: 70)),
+                   child:(user!.photoURL != null)
+                      ? Image.network(
+                          user!.photoURL.toString(),
+                          fit: BoxFit.cover,
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Colors.yellow,
+                          child: Text(user!.displayName![0]),
                         ),
+                  // Image.network(user.displayName[0])
 
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Text('Change Profile Picture', style: TextStyle(fontFamily: 'inter', fontWeight: FontWeight.w600, color: Colors.white)),
-                        //     SizedBox(width: 8),
-                        //     SvgPicture.asset('assets/icons/camera.svg', color: Colors.white),
-                        //   ],
-                        // )
-                      ],
-                    ),
-                  ),
+                  // Text(username[1])
+                  // Image(image: NetworkImage('$username[1])'),
+                  // Image.network("https://wallpaper.dog/large/20469131.jpg",fit: BoxFit.cover,),
                 ),
+                )
+              ),
 
 
 
@@ -256,9 +216,42 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
                   title: Text('Settings'),
                 ),
                 ListTile(
-                  onTap: () {},
-                  leading: Icon(Iconsax.support),
-                  title: Text('Support'),
+                  onTap: () 
+                  {
+                    DialogHelper.exit(context);
+                    // ShowDialog(
+                    //   context:context,
+                    //   Builder: (BuildContext context)
+                    //   {
+
+                    //   }
+                    //   child: AlertDialog(
+                    //       title: new Text('Logout?'),
+                    //       content: new Text('Are You Sur You want to logout?'),
+                    //       backgroundColor: Appcolor.primary,
+                    //       shape:
+                    //           RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+                    //       actions: <Widget>[
+                    //         new FlatButton(
+                    //           child: new Text('Yes'),
+                    //           textColor: Colors.greenAccent,
+                    //           onPressed: () {
+                    //             _signOut(context);
+                    //           },
+                    //         ),
+                    //         new FlatButton(
+                    //           child: Text('no'),
+                    //           textColor: Colors.redAccent,
+                    //           onPressed: () {
+                    //             Navigator.pop(context);
+                    //           },
+                    //         ),
+                    //       ],
+                    //     ),
+                    // );
+                  },
+                  leading: Icon(Iconsax.logout),
+                  title: Text('Log out'),
                 ),
                 Spacer(),
                 Padding(
@@ -283,7 +276,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
               toolbarHeight: 80,
               backgroundColor: Colors.white,
               leading: IconButton(
-                color: Colors.black,
+                color: Appcolor.secondary,
                 onPressed: _handleMenuButtonPressed,
                 icon: ValueListenableBuilder<AdvancedDrawerValue>(
                   valueListenable: _advancedDrawerController,
@@ -300,11 +293,11 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
               ),
               actions: [
                 IconButton(
-                  icon: Icon(Iconsax.notification, color: Colors.grey.shade700),
+                  icon: Icon(Iconsax.notification, color:Appcolor.secondary),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Iconsax.more, color: Colors.grey.shade700),
+                  icon: Icon(Iconsax.more, color: Appcolor.secondary),
                   onPressed: () {},
                 ),
               ],
@@ -428,7 +421,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
                                   width: 60,
                                   height: 60,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.shade900,
+                                    color: Appcolor.secondary,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Center(
@@ -523,5 +516,28 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _handleMenuButtonPressed() {
     _advancedDrawerController.showDrawer();
+  }
+  
+    Widget _buildButton({VoidCallback? onTap, required String text, Color? color}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: MaterialButton(
+        color: color,
+        minWidth: double.infinity,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        onPressed: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
