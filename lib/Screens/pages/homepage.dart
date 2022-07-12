@@ -1,6 +1,9 @@
+
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
@@ -9,6 +12,8 @@ import 'package:payment_app/Screens/pages/contact.dart';
 import 'package:payment_app/Screens/pages/pay.dart';
 import 'package:payment_app/helpers/dialog_helper.dart';
 import 'package:payment_app/theme/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -24,6 +29,8 @@ class _HomePageState extends State<HomePage> {
 final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
   bool isloggedin = false;
+
+  var amount;
 
   // var _image;
   // File _image;
@@ -42,6 +49,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
   }
 
   getUser() async {
+    print('get user');
     User? firebaseUser = _auth.currentUser;
     await firebaseUser!.reload();
     firebaseUser = _auth.currentUser;
@@ -78,6 +86,23 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
     super.initState();
     this.checkAuthentification();
     this.getUser();
+    getData();
+    // setAmount();
+    getAmount();
+  }
+  
+ setAmount() async
+  {
+    
+    SharedPreferences setprefamt = await SharedPreferences.getInstance();
+    var data=  setprefamt.getInt('initailamt' );
+    data==0?  await setprefamt.setInt('initailamt',20000 ):"";
+    amount= setprefamt .getInt('initailamt');
+    print(setprefamt.getInt('initailamt' ).toString());
+    print(amount);
+    setState(() {
+      
+    });
   }
 
   void _listenToScrollChange() {
@@ -102,12 +127,63 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
         MaterialPageRoute(builder: (context) => LoginScreen()),
         (route) => false);
   }
+  // Stream<List<User>> readUsers()=>
+  // final docUser=FirebaseFirestore.instance.collection('data').doc('my-id');
+
+  // final json=
+  // {
+  //   'amount':2000,
+  //   'debtamt':200,
+  // };
+
+    dynamic data;
+
+  Future<dynamic> getData() async {
+    print('get data');
+
+    final DocumentReference document =   FirebaseFirestore.instance.collection("data").doc('LhdQRCIB1DCyGGPi6O1C');
+
+    await document.get().then<dynamic>(( DocumentSnapshot snapshot) async{
+     setState(() {
+       data =snapshot.data;
+       print('data'+data);
+     });
+    });
+ }
+  
+
+  // FirebaseAmount() async
+  // {
+  //   DocumentSnapshot variable = await Firebase.instance.collection('test').doc('').get();
+  //   print(variable['field1']);
+  // }
+
+  var detamt;
+
+getAmount() async
+{
+  print('getamount');
+  DocumentSnapshot variable = await FirebaseFirestore.instance.collection('payment').doc('f13LicFOzzfMeYtVzxfe').get();
+  // doc('MzdflPYy2CCoJI2A2ZgL').get();//only one document value will be get
+  print('Sample Data 2 : ${variable['deptamt']}');//de
+  print('Sample Data 1 : ${variable['totamt']}');
+  setState(() {
+     detamt=variable['totamt'];
+    print('dedamt:${detamt}');
+  });
+}
 
   
 
   @override
   Widget build(BuildContext context) {
-    return AdvancedDrawer(
+    return user == null
+              ? Scaffold(
+                body: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              ):
+                AdvancedDrawer(
       backdropColor:Appcolor.secondary,
       // backdropColor: Colors.grey.shade900,
       controller: _advancedDrawerController,
@@ -150,11 +226,11 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
                   ),
                   child: 
 
-                  user!.email == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : CircleAvatar(
+              //     user == null
+              // ? const Center(
+              //     child: CircularProgressIndicator(),
+              //   )
+              CircleAvatar(
                 radius: 60,
                 backgroundColor: Colors.grey,
                 child: ClipOval(
@@ -350,7 +426,15 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
                           children: [
                             Text('\₹', style: TextStyle(color: Colors.grey.shade800, fontSize: 22),),
                             SizedBox(width: 3,),
-                            Text('1,840.00',
+
+                            //initial
+                            Text(
+                            //  data['amount'],
+                              // amount??'',
+                              // data['deptamt'],
+                              detamt??'',
+                              // '${variable['deptamt']}',
+                              // '1,840.00',
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
@@ -452,7 +536,8 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
                         children: [
                           Text('Today', style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.w600),),
                           SizedBox(width: 10,),
-                          Text('\₹ 1,840.00', style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700,)),
+                          Text('\₹ 1,840.00', 
+                          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700,)),
                         ]
                       ),
                     ),
@@ -516,28 +601,5 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _handleMenuButtonPressed() {
     _advancedDrawerController.showDrawer();
-  }
-  
-    Widget _buildButton({VoidCallback? onTap, required String text, Color? color}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: MaterialButton(
-        color: color,
-        minWidth: double.infinity,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        onPressed: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

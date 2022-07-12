@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:payment_app/Screens/pages/homepage.dart';
 import 'package:payment_app/theme/theme.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:toast/toast.dart';
@@ -33,9 +37,10 @@ class _PayMoneyState extends State<PayMoney> {
     // TODO: implement dispose
     super.dispose();
     razorpay!.clear();
+    textEditingController.dispose();
   }
 
-  void openCheckout(){
+  Future openCheckout()async{
     print('open checkout');
     var options = {
       "key" : "rzp_test_Zpx9zpp0byhtjD",
@@ -54,6 +59,7 @@ class _PayMoneyState extends State<PayMoney> {
     try{
       razorpay!.open(options);
 
+
     }catch(e){
       print(e.toString());
     }
@@ -63,20 +69,33 @@ class _PayMoneyState extends State<PayMoney> {
   void handlerPaymentSuccess(){
     print("Pament success");
     Toast.show("Pament success");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false);
     // Toast.show("Pament success", context);
   }
 
   void handlerErrorFailure(){
     print("Pament error");
     Toast.show("Pament error");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false);
     // Toast.show("Pament error", context);
   }
 
   void handlerExternalWallet(){
     print("External Wallet");
     Toast.show("External Wallet");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false);
     // Toast.show("External Wallet", context);
   }
+
+    bool _validate = false;
+    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold
@@ -123,9 +142,12 @@ class _PayMoneyState extends State<PayMoney> {
                               textAlign: TextAlign.center,
                               controller: textEditingController,
                               validator: (input) {
-                              if (input!.isEmpty) return 'Enter amount';
-                            },
+                                  if (input!.isEmpty){ return 'Enter amount';}else{
+                                    return null;
+                                  }
+                                },
                               decoration: InputDecoration(
+                                errorText: _validate ? 'Value Can\'t Be Empty' : null,
                               border: InputBorder.none,
                               labelText: 'Enter Amount',
                               labelStyle: TextStyle
@@ -141,16 +163,110 @@ class _PayMoneyState extends State<PayMoney> {
                     width: double.infinity,
                     child: RaisedButton(
                       color: Appcolor.secondary,
-                      onPressed: () {
-                        // Validate returns true if the form is valid, or false
-                        // otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a Snackbar.
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
-                          openCheckout();
+
+                      onPressed: ()
+                      {
+                        setState(() {
+                          textEditingController.text.isEmpty ? _validate = true : _validate = false;
+                        });
+                        Map <String,dynamic> data=
+                          {
+                            "deptamt":textEditingController.text,
+                          };
+
+                          // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
+                        // {
+                        //   print(data);
+                        //   print("Success!!");
+                        //   print(data);
+                        //   openCheckout().then((value) =>
+                        //    Navigator.of(context).pushAndRemoveUntil(
+                        //       MaterialPageRoute(builder: (context) => HomePage()),
+                        //       (route) => false));
+                        // }
+                        // )/
+                        
+                        // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
+                        // {
+                        //   print(data);
+                        //   print("Success!!");
+                        //   print(data);
+                        //   openCheckout().then((value) =>
+                        //    Navigator.of(context).pushAndRemoveUntil(
+                        //       MaterialPageRoute(builder: (context) => HomePage()),
+                        //       (route) => false));
+                        // }
+                        // )//insert
+
+                        //update
+                        FirebaseFirestore.instance.collection('payment').doc('f13LicFOzzfMeYtVzxfe').update(data).then
+                        (
+                          (data) 
+                          {
+                            log('successsQQ');
+                          // print(data);
+                          // print("Success!!");
+                          // print(data);
+                          openCheckout().then((value) =>
+                           Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                              (route) => false));
                         }
+                        )
+                        // (
+                        //   {
+                        //     'deptamt':'textEditingController.text',
+                        //     // openCheckout().
+                        //   }
+                        // )
+                        
+                        .catchError((onError)
+                        {
+                          print('error');
+                        }
+                        );
+                        log('processing');
                       },
+
+
+
+                //       onPressed: () {
+                //         // Validate returns true if the form is valid, or false
+                //         // otherwise.
+                //         if (textEditingController.text.isNotEmpty) {
+                //           // Toast('');
+                //           log('processing');
+                //           // If the form is valid, display a Snackbar.
+                //           // Scaffold.of(context).showSnackBar(
+                //           //     SnackBar(content: Text('Processing Data')));
+                //           openCheckout().then((value) =>
+                //            Navigator.of(context).pushAndRemoveUntil(
+                //               MaterialPageRoute(builder: (context) => HomePage()),
+                //               (route) => false)
+
+
+                //           //db
+                // //           Map <String,dynamic> data=
+                // //           {
+                // //                   "field1":textEditingControllertext,
+                // //           };
+                // // FirebaseFirestore.instance.collection("test").add(data).then((data) 
+                // // {
+                // //   print(data);
+                // //   print("Success!!");
+                // //   print(data);
+                // // }).catchError((onError)
+                // // {
+                // //   print('error');
+                // // }
+                // // );
+                //               );
+                //         }else{
+                //           log('enter amt');
+                //           // Scaffold.of(context).showSnackBar(
+                //           //     SnackBar(content: Text('Please Enter AMount')));
+                //         }
+                //       },
                       child: Text(
                         'Pay Money',
                         style: TextStyle(color: Colors.white),

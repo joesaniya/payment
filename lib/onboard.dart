@@ -13,6 +13,7 @@ class Onboard extends StatefulWidget {
 
 class _OnboardState extends State<Onboard> with TickerProviderStateMixin{
    final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+   
 
   @override
   void initState() {

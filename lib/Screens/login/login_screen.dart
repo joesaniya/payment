@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         // Navigator.pushReplacementNamed(context, "/");
       } catch (e) {
-        // showError(e.message);
+        showError(e.toString());
         print(e);
       }
     }
@@ -130,12 +130,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: Appcolor.background,
       child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // Container
+              // (
+              //   height: 200,
+              //   width: 300,
+              //   child: Image(image: AssetImage('assets/images/wallet.png',),fit: BoxFit.cover,),
+              // ),
               Image.asset(
+                // 'assets/images/glogo.png',
+                // color: Appcolor.secondary,
                 'assets/images/wallet.png',
                 fit: BoxFit.cover,
               ),

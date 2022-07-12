@@ -51,6 +51,7 @@ class _SignUpState extends State<SignUp> {
 
         }
       } catch (e) {
+        showError(e.toString());
         // showError(e.message);
         print(e);
       }
