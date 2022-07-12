@@ -96,7 +96,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
     getData();
     // setAmount();
     getAmount();
-    Result();
+    // Result();
   }
   
  setAmount() async
@@ -174,7 +174,11 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 getAmount() async
 {
   print('getamount');
-  DocumentSnapshot variable = await FirebaseFirestore.instance.collection('payment').doc('f13LicFOzzfMeYtVzxfe').get();
+  DocumentSnapshot variable = await FirebaseFirestore.instance.collection('payment').doc
+  (
+    // 'f13LicFOzzfMeYtVzxfe'
+    'payment_details'
+    ).get();
   // doc('MzdflPYy2CCoJI2A2ZgL').get();//only one document value will be get
   print('Sample Data 2 : ${variable['deptamt']}');//de
   print('Sample Data 1 : ${variable['totamt']}');
@@ -192,13 +196,13 @@ getAmount() async
   });
 }
 
-Result() sync*
-{
-  print('result');
-  int sum =detamt - Total;
-    res = sum.toString();
-    log('res+$res');
-}
+// Result() sync*
+// {
+//   print('result');
+//   int sum =detamt - Total;
+//     res = sum.toString();
+//     log('res+$res');
+// }
 
   
 
@@ -214,447 +218,542 @@ Result() sync*
                     ),
                   ),
               ):
-                AdvancedDrawer(
-      backdropColor:Appcolor.secondary,
-      // backdropColor: Colors.grey.shade900,
-      controller: _advancedDrawerController,
-      animationCurve: Curves.easeInOut,
-      animationDuration: const Duration(milliseconds: 300),
-      animateChildDecoration: true,
-      rtlOpening: false,
-      disabledGestures: false,
-      childDecoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Appcolor.secondary,
-            blurRadius: 20.0,
-            spreadRadius: 5.0,
-            offset: Offset(-20.0, 0.0),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(30),
-      ),
-      drawer: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(top: 20),
-          child: ListTileTheme(
-            textColor: Colors.white,
-            iconColor: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 80.0,
-                  height: 80.0,
-                  margin: EdgeInsets.only(
-                    left: 20,
-                    top: 24.0,
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    shape: BoxShape.circle,
-                  ),
-                  child: 
-
-              //     user == null
-              // ? const Center(
-              //     child: CircularProgressIndicator(),
-              //   )
-              CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.grey,
-                child: ClipOval(
-                  child: SizedBox(
-                      width: 80.0,
-                      height: 80.0,
-                      // child: Icon(Icons.account_circle, size: 70)),
-                   child:(user!.photoURL != null)
-                      ? Image.network(
-                          user!.photoURL.toString(),
-                          fit: BoxFit.cover,
-                        )
-                      : CircleAvatar(
-                          backgroundColor: Appcolor.background,
-                          child: Text(user!.displayName![0],style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Appcolor.secondary,
-                              ),),
-                        ),
-                  // Image.network(user.displayName[0])
-
-                  // Text(username[1])
-                  // Image(image: NetworkImage('$username[1])'),
-                  // Image.network("https://wallpaper.dog/large/20469131.jpg",fit: BoxFit.cover,),
-                ),
-                )
-              ),
-
-
-
-                  // Image.asset('assets/images/avatar-1.png')
-                ),
-                SizedBox(height: 10,),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.0),
-                  child: Text(user!.email.toString(),
-                    // "John Doe", 
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
-                ),
-                Spacer(),
-                Divider(color: Colors.grey.shade800,),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Iconsax.home),
-                  title: Text('Dashboard'),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Iconsax.chart_2),
-                  title: Text('Analytics'),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Iconsax.profile_2user),
-                  title: Text('Contacts'),
-                ),
-                SizedBox(height: 50,),
-                Divider(color: Colors.grey.shade800),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Iconsax.setting_2),
-                  title: Text('Settings'),
-                ),
-                ListTile(
-                  onTap: () 
-                  {
-                    DialogHelper.exit(context);
-                    // ShowDialog(
-                    //   context:context,
-                    //   Builder: (BuildContext context)
-                    //   {
-
-                    //   }
-                    //   child: AlertDialog(
-                    //       title: new Text('Logout?'),
-                    //       content: new Text('Are You Sur You want to logout?'),
-                    //       backgroundColor: Appcolor.primary,
-                    //       shape:
-                    //           RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
-                    //       actions: <Widget>[
-                    //         new FlatButton(
-                    //           child: new Text('Yes'),
-                    //           textColor: Colors.greenAccent,
-                    //           onPressed: () {
-                    //             _signOut(context);
-                    //           },
-                    //         ),
-                    //         new FlatButton(
-                    //           child: Text('no'),
-                    //           textColor: Colors.redAccent,
-                    //           onPressed: () {
-                    //             Navigator.pop(context);
-                    //           },
-                    //         ),
-                    //       ],
-                    //     ),
-                    // );
-                  },
-                  leading: Icon(Iconsax.logout),
-                  title: Text('Log out'),
-                ),
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text('Version 1.0.0', style: TextStyle(color: Colors.grey.shade500),),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Appcolor.background,
-        body: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 250.0,
-              elevation: 0,
-              pinned: true,
-              stretch: true,
-              toolbarHeight: 80,
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                color: Appcolor.secondary,
-                onPressed: _handleMenuButtonPressed,
-                icon: ValueListenableBuilder<AdvancedDrawerValue>(
-                  valueListenable: _advancedDrawerController,
-                  builder: (_, value, __) {
-                    return AnimatedSwitcher(
-                      duration: Duration(milliseconds: 250),
-                      child: Icon(
-                        value.visible ? Iconsax.close_square : Iconsax.menu,
-                        key: ValueKey<bool>(value.visible),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              actions: [
-                IconButton(
-                  icon: Icon(Iconsax.notification, color:Appcolor.secondary),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(Iconsax.more, color: Appcolor.secondary),
-                  onPressed: () {},
-                ),
-              ],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
-                ),
-              ),
-              centerTitle: true,
-              title: AnimatedOpacity(
-                opacity: _isScrolled ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 500),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '\₹',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                WillPopScope(
+                  onWillPop: () => _onWillPop(context),
+                  child: AdvancedDrawer(
+                      backdropColor:Appcolor.secondary,
+                      // backdropColor: Colors.grey.shade900,
+                      controller: _advancedDrawerController,
+                      animationCurve: Curves.easeInOut,
+                      animationDuration: const Duration(milliseconds: 300),
+                      animateChildDecoration: true,
+                      rtlOpening: false,
+                      disabledGestures: false,
+                      childDecoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Appcolor.secondary,
+                            blurRadius: 20.0,
+                            spreadRadius: 5.0,
+                            offset: Offset(-20.0, 0.0),
                           ),
-                        ),
-                        Text(
-                          // '\₹ 1,840.00',
-                          // '\₹'+detamt??'',
-                          detamt??'',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20,),
-                    Container(
-                      width: 30,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade800,
-                        borderRadius: BorderRadius.circular(10),
+                        ],
+                        borderRadius: BorderRadius.circular(30),
                       ),
+                      drawer: SafeArea(
+                        child: Container(
+                          padding: EdgeInsets.only(top: 20),
+                          child: ListTileTheme(
+                            textColor: Colors.white,
+                            iconColor: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                  Container(
+                    width: 80.0,
+                    height: 80.0,
+                    margin: EdgeInsets.only(
+                      left: 20,
+                      top: 24.0,
                     ),
-                  ],
-                ),
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.pin,
-                titlePadding: const EdgeInsets.only(left: 20, right: 20),
-                title: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: _isScrolled ? 0.0 : 1.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FadeIn(
-                        duration: const Duration(milliseconds: 500),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('\₹', style: TextStyle(color: Colors.grey.shade800, fontSize: 22),),
-                            SizedBox(width: 3,),
-
-                            //initial
-                            Text(
-                            //  data['amount'],
-                              // amount??'',
-                              // data['deptamt'],
-                              detamt??'',
-                              // '${variable['deptamt']}',
-                              // '1,840.00',
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade800,
+                      shape: BoxShape.circle,
+                    ),
+                    child: 
+                  
+                              //     user == null
+                              // ? const Center(
+                              //     child: CircularProgressIndicator(),
+                              //   )
+                              CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey,
+                  child: ClipOval(
+                    child: SizedBox(
+                        width: 80.0,
+                        height: 80.0,
+                        // child: Icon(Icons.account_circle, size: 70)),
+                     child:(user!.photoURL != null)
+                        ? Image.network(
+                            user!.photoURL.toString(),
+                            fit: BoxFit.cover,
+                          )
+                        : CircleAvatar(
+                            backgroundColor: Appcolor.background,
+                            child: Text(user!.displayName![0],style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Appcolor.secondary,
+                                ),),
+                          ),
+                    // Image.network(user.displayName[0])
+                  
+                    // Text(username[1])
+                    // Image(image: NetworkImage('$username[1])'),
+                    // Image.network("https://wallpaper.dog/large/20469131.jpg",fit: BoxFit.cover,),
+                  ),
+                  )
                               ),
-                            ),
-                          ],
-                        ),
+                  
+                  
+                  
+                    // Image.asset('assets/images/avatar-1.png')
+                  ),
+                  SizedBox(height: 10,),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30.0),
+                    child: Text(user!.email.toString(),
+                      // "John Doe", 
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+                  ),
+                  Spacer(),
+                  Divider(color: Colors.grey.shade800,),
+                  ListTile(
+                    onTap: () {},
+                    leading: Icon(Iconsax.home),
+                    title: Text
+                    (
+                      'Dashboard',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {},
+                    leading: Icon(Iconsax.chart_2),
+                    title: Text
+                    (
+                      'Analytics',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {},
+                    leading: Icon(Iconsax.profile_2user),
+                    title: Text
+                    (
+                      'Contacts',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)
+                    ),
+                  ),
+                  SizedBox(height: 50,),
+                  Divider(color: Colors.grey.shade800),
+                  ListTile(
+                    onTap: () {},
+                    leading: Icon(Iconsax.setting_2),
+                    title: Text
+                    (
+                      'Settings',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)
                       ),
-                      SizedBox(height: 9,),
-                      FadeIn(
-                        duration: const Duration(milliseconds: 500),
-                        child: MaterialButton(
-                          height: 30,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                          onPressed: () 
-                          {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => 
-                            SendMoney()
-                            // PayMoney()
-                            ));
-                          },
-                          child: Text('Send Money', style: TextStyle(color: Colors.black, fontSize: 10),),
-                          color: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.grey.shade300, width: 1),
-                            borderRadius: BorderRadius.circular(30),
+                  ),
+                  ListTile(
+                    onTap: () 
+                    {
+                      DialogHelper.exit(context);
+                      // ShowDialog(
+                      //   context:context,
+                      //   Builder: (BuildContext context)
+                      //   {
+                  
+                      //   }
+                      //   child: AlertDialog(
+                      //       title: new Text('Logout?'),
+                      //       content: new Text('Are You Sur You want to logout?'),
+                      //       backgroundColor: Appcolor.primary,
+                      //       shape:
+                      //           RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+                      //       actions: <Widget>[
+                      //         new FlatButton(
+                      //           child: new Text('Yes'),
+                      //           textColor: Colors.greenAccent,
+                      //           onPressed: () {
+                      //             _signOut(context);
+                      //           },
+                      //         ),
+                      //         new FlatButton(
+                      //           child: Text('no'),
+                      //           textColor: Colors.redAccent,
+                      //           onPressed: () {
+                      //             Navigator.pop(context);
+                      //           },
+                      //         ),
+                      //       ],
+                      //     ),
+                      // );
+                    },
+                    leading: Icon(Iconsax.logout),
+                    title: Text('Log out',style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text('Version 1.0.0', style: TextStyle(color: Colors.grey.shade500),),
+                  )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      child: Scaffold(
+                        backgroundColor: Appcolor.background,
+                        body: CustomScrollView(
+                          controller: _scrollController,
+                          slivers: [
+                            SliverAppBar(
+                              expandedHeight: 250.0,
+                              elevation: 0,
+                              pinned: true,
+                              stretch: true,
+                              toolbarHeight: 80,
+                              backgroundColor: Colors.white,
+                              leading: IconButton(
+                  color: Appcolor.secondary,
+                  onPressed: _handleMenuButtonPressed,
+                  icon: ValueListenableBuilder<AdvancedDrawerValue>(
+                    valueListenable: _advancedDrawerController,
+                    builder: (_, value, __) {
+                      return AnimatedSwitcher(
+                        duration: Duration(milliseconds: 250),
+                        child: Icon(
+                          value.visible ? Iconsax.close_square : Iconsax.menu,
+                          key: ValueKey<bool>(value.visible),
+                        ),
+                      );
+                    },
+                  ),
+                              ),
+                              actions: [
+                  IconButton(
+                    icon: Icon(Iconsax.notification, color:Appcolor.secondary),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Iconsax.more, color: Appcolor.secondary),
+                    onPressed: () {},
+                  ),
+                              ],
+                              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                              ),
+                              centerTitle: true,
+                              title: AnimatedOpacity(
+                  opacity: _isScrolled ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 500),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '\₹',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            // '\₹ 1,840.00',
+                            // '\₹'+detamt??'',
+                            detamt??'',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20,),
                       Container(
                         width: 30,
-                        height: 3,
+                        height: 4,
                         decoration: BoxDecoration(
                           color: Colors.grey.shade800,
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      SizedBox(height: 8,),
                     ],
                   ),
-                ),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                SizedBox(height: 20,),
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  height: 115,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _services.length,
-                    itemBuilder: (context, index) {
-                      return FadeInDown(
-                        duration: Duration(milliseconds: (index + 1) * 100),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (_services[index][0] == 'Transfer') { 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()));
-                              }
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Appcolor.secondary,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Center(
-                                    child: Icon(_services[index][1], color: Colors.white, size: 25,),
-                                  ),
+                              ),
+                              flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
+                  titlePadding: const EdgeInsets.only(left: 20, right: 20),
+                  title: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    opacity: _isScrolled ? 0.0 : 1.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FadeIn(
+                          duration: const Duration(milliseconds: 500),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('\₹', style: TextStyle(color: Colors.grey.shade800, fontSize: 22),),
+                              SizedBox(width: 3,),
+                  
+                              //initial
+                              Text(
+                              //  data['amount'],
+                                // amount??'',
+                                // data['deptamt'],
+                                detamt??'',
+                                // '${variable['deptamt']}',
+                                // '1,840.00',
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                SizedBox(height: 10,),
-                                Text(_services[index][0], style: TextStyle(color: Colors.grey.shade800, fontSize: 12),),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 9,),
+                        FadeIn(
+                          duration: const Duration(milliseconds: 500),
+                          child: MaterialButton(
+                            height: 30,
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                            onPressed: () 
+                            {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => 
+                              SendMoney()
+                              // PayMoney()
+                              ));
+                            },
+                            child: Text('Send Money', style: TextStyle(color: Colors.black, fontSize: 10),),
+                            color: Colors.transparent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.grey.shade300, width: 1),
+                              borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ])
-            ),
-            SliverFillRemaining(
-              child: Container(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-                child: Column(
-                  children: [
-                    FadeInDown(
-                      duration: Duration(milliseconds: 500),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Today', style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.w600),),
-                          SizedBox(width: 10,),
-                          Text('\₹${detamt}', 
-                          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700,)),
-                          
-                        ]
-                      ),
+                        SizedBox(height: 10,),
+                        Container(
+                          width: 30,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade800,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        SizedBox(height: 8,),
+                      ],
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(top: 20),
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _transactions.length,
-                        itemBuilder: (context, index) {
-                          return FadeInDown(
-                            duration: Duration(milliseconds: 500),
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    blurRadius: 5,
-                                    spreadRadius: 1,
-                                    offset: Offset(0, 6),
-                                  ),
-                                ],
+                  ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
+                            SliverList(
+                              delegate: SliverChildListDelegate([
+                  SizedBox(height: 20,),
+                  Container(
+                    padding: EdgeInsets.only(top: 20),
+                    height: 115,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _services.length,
+                      itemBuilder: (context, index) {
+                        return FadeInDown(
+                          duration: Duration(milliseconds: (index + 1) * 100),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (_services[index][0] == 'Transfer') { 
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()));
+                                }
+                              },
+                              child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Image.network(_transactions[index][1], width: 50, height: 50,),
-                                      SizedBox(width: 15,),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(_transactions[index][0], style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w500, fontSize: 14),),
-                                          SizedBox(height: 5,),
-                                          Text(_transactions[index][2], style: TextStyle(color: Colors.grey.shade500, fontSize: 12),),
-                                        ],
-                                      ),
-                                    ],
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Appcolor.secondary,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Center(
+                                      child: Icon(_services[index][1], color: Colors.white, size: 25,),
+                                    ),
                                   ),
-                                  Text(_transactions[index][3], style: TextStyle(color: Colors.grey.shade800, fontSize: 16, fontWeight: FontWeight.w700),),
+                                  SizedBox(height: 10,),
+                                  Text(_services[index][0], style: TextStyle(color: Colors.grey.shade800, fontSize: 12),),
                                 ],
                               ),
                             ),
-                          );
-                        },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                              ])
+                            ),
+                            SliverFillRemaining(
+                              child: Container(
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                  child: Column(
+                    children: [
+                      FadeInDown(
+                        duration: Duration(milliseconds: 500),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Today', style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.w600),),
+                            SizedBox(width: 10,),
+                            Text('\₹${detamt}', 
+                            style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700,)),
+                            
+                          ]
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ]
-        )
-      ),
-    );
+                      Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.only(top: 20),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _transactions.length,
+                          itemBuilder: (context, index) {
+                            return FadeInDown(
+                              duration: Duration(milliseconds: 500),
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      blurRadius: 5,
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Image.network(_transactions[index][1], width: 50, height: 50,),
+                                        SizedBox(width: 15,),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(_transactions[index][0], style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w500, fontSize: 14),),
+                                            SizedBox(height: 5,),
+                                            Text(_transactions[index][2], style: TextStyle(color: Colors.grey.shade500, fontSize: 12),),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Text(_transactions[index][3], style: TextStyle(color: Colors.grey.shade800, fontSize: 16, fontWeight: FontWeight.w700),),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                              ),
+                            )
+                          ]
+                        )
+                      ),
+                    ),
+                );
   }
 
   void _handleMenuButtonPressed() {
     _advancedDrawerController.showDrawer();
+  }
+  
+   Future<bool> _onWillPop(BuildContext context) async {
+    bool? exitResult = await _showExitBottomSheet(context);
+    return exitResult ?? false;
+  }
+
+  Future<bool?> _showExitBottomSheet(BuildContext context) async {
+    return await showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration:  BoxDecoration(
+            color: Appcolor.secondary,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
+          ),
+          child: _buildBottomSheet(context),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSheet(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(
+          height: 24,
+        ),
+        Text(
+          'Do you really want to exit the app?',
+          style: TextStyle(
+                                    color: Appcolor.todaybg,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'inter',
+                                    fontSize: 20
+                                  ),
+          // style: Theme.of(context).textTheme.headline6,
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            TextButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                ),
+              ),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('CANCEL',style: TextStyle(color: Appcolor.timetext, fontWeight: FontWeight.w400,fontFamily: 'inter',)),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                ),
+              ),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('YES, EXIT',style: TextStyle(color: Appcolor.timetext, fontWeight: FontWeight.w400,fontFamily: 'inter',)),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

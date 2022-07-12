@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:payment_app/Screens/pages/homepage.dart';
 import 'package:payment_app/theme/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../login/login_screen.dart';
 // import 'package:auth_app_flutter/Utilities/routes.dart';
 
@@ -37,6 +38,8 @@ class _SignUpState extends State<SignUp> {
             email: _email.toString(), password: _password.toString());
         if (user != null) {
           print('sign up');
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', _email.toString());
           // UserUpdateInfo updateuser = UserUpdateInfo();
           // updateuser.displayName = _name;
           //  user.updateProfile(updateuser);
@@ -134,6 +137,8 @@ class _SignUpState extends State<SignUp> {
                     children: <Widget>[
                       Container(
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
                             validator: (input) {
                               if (input!.isEmpty) return 'Enter Name';
                             },
@@ -145,6 +150,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
                             validator: (input) {
                               if (input!.isEmpty) return 'Enter Email';
                             },
@@ -155,6 +162,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child: TextFormField(
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.number,
                             validator: (input) {
                               if (input!.length < 6)
                                 return 'Provide Minimum 6 Character';

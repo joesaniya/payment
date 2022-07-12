@@ -140,7 +140,11 @@ class _SendMoneyState extends State<SendMoney> {
 getAmount() async
 {
   print('getamount-->pay');
-  DocumentSnapshot variable = await FirebaseFirestore.instance.collection('payment').doc('f13LicFOzzfMeYtVzxfe').get();
+  DocumentSnapshot variable = await FirebaseFirestore.instance.collection('payment').doc
+  (
+    // 'f13LicFOzzfMeYtVzxfe'
+    'payment_details'
+  ).get();
   // doc('MzdflPYy2CCoJI2A2ZgL').get();//only one document value will be get
   print('Sample Data 2 : ${variable['deptamt']}');//de
   print('Sample Data 1 : ${variable['totamt']}');
@@ -347,119 +351,32 @@ getAmount() async
                         setState(() {
                           amount.text.isEmpty ? _validate = true : _validate = false;
                         });
+                        var totalAMount=int.parse(detamt)-int.parse(amount.text);
 
-                        // if(Total<0)
-                        // {
-                        //   log('ifamt cking');
-                        //   Toast.show('Amount less');
-                        // }
-                        // else
-                        // {
-                        //   log('elseamt cking');
-                        //   Map <String,dynamic> data=
-                        //   {
-                        //     "deptamt":amount.text,
-                        //   };
-
-                        //   // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
-                        // // {
-                        // //   print(data);
-                        // //   print("Success!!");
-                        // //   print(data);
-                        // //   openCheckout().then((value) =>
-                        // //    Navigator.of(context).pushAndRemoveUntil(
-                        // //       MaterialPageRoute(builder: (context) => HomePage()),
-                        // //       (route) => false));
-                        // // }
-                        // // )/
                         
-                        // // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
-                        // // {
-                        // //   print(data);
-                        // //   print("Success!!");
-                        // //   print(data);
-                        // //   openCheckout().then((value) =>
-                        // //    Navigator.of(context).pushAndRemoveUntil(
-                        // //       MaterialPageRoute(builder: (context) => HomePage()),
-                        // //       (route) => false));
-                        // // }
-                        // // )//insert
+                        Map <String,dynamic> data=
+                          {
+                            // "deptamt":totalAMount.toString(),
+                            "totamt":totalAMount.toString(),
+                          };
 
-                        // //update
-                        // FirebaseFirestore.instance.collection('payment').doc('payment_details').update(data).then
+                          // print(data);
+                          openCheckout().then((value) =>
+                                                  FirebaseFirestore.instance.collection('payment').doc('payment_details').update(data).then((value) => Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                              (route) => false) )
+
+                    )
+                        //update
                         // (
                         //   (data) 
                         //   {
                         //     log('successsQQ');
                         //   // print(data);
                         //   // print("Success!!");
-                        //   // print(data);
-                        //   openCheckout().then((value) =>
-                        //    Navigator.of(context).pushAndRemoveUntil(
-                        //       MaterialPageRoute(builder: (context) => HomePage()),
-                        //       (route) => false));
+                        
                         // }
                         // )
-                        // // (
-                        // //   {
-                        // //     'deptamt':'textEditingController.text',
-                        // //     // openCheckout().
-                        // //   }
-                        // // )
-                        
-                        // .catchError((onError)
-                        // {
-                        //   print('error');
-                        // }
-                        // );
-                        // log('processing');
-                        // }
-                        Map <String,dynamic> data=
-                          {
-                            "deptamt":amount.text,
-                          };
-
-                        
-
-                          // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
-                        // {
-                        //   print(data);
-                        //   print("Success!!");
-                        //   print(data);
-                        //   openCheckout().then((value) =>
-                        //    Navigator.of(context).pushAndRemoveUntil(
-                        //       MaterialPageRoute(builder: (context) => HomePage()),
-                        //       (route) => false));
-                        // }
-                        // )/
-                        
-                        // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
-                        // {
-                        //   print(data);
-                        //   print("Success!!");
-                        //   print(data);
-                        //   openCheckout().then((value) =>
-                        //    Navigator.of(context).pushAndRemoveUntil(
-                        //       MaterialPageRoute(builder: (context) => HomePage()),
-                        //       (route) => false));
-                        // }
-                        // )//insert
-
-                        //update
-                        FirebaseFirestore.instance.collection('payment').doc('payment_details').update(data).then
-                        (
-                          (data) 
-                          {
-                            log('successsQQ');
-                          // print(data);
-                          // print("Success!!");
-                          // print(data);
-                          openCheckout().then((value) =>
-                           Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => HomePage()),
-                              (route) => false));
-                        }
-                        )
                         // (
                         //   {
                         //     'deptamt':'textEditingController.text',

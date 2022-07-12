@@ -45,14 +45,19 @@ class _LoginScreenState extends State<LoginScreen> {
     //   this.checkAuthentification();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   login() async {
     String email;
     List favouriteMeal;
     print('LoginModal');
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('email', _email.toString());
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('email', _email.toString());
 
       try {
         print('try 1');
@@ -185,6 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: <Widget>[
                       Container(
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
                             validator: (input) {
                               if (input!.isEmpty) return 'Enter Email';
                             },
@@ -195,6 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Container(
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
                             validator: (input) {
                               if (input!.length < 6)
                                 return 'Provide Minimum 6 Character';

@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+await initial();
   runApp(
     MyApp()
     // MaterialApp
@@ -19,6 +20,31 @@ Future<void> main() async {
     // )
     );
 }
+late String? _email;
+ initial() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+     _email = preferences.getString("email");
+    print('initial');
+  }
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+late  User? user;
+  bool isloggedin = false;
+  String? email;
+
+  //  getUser() async {
+  //   print('getuser');
+  //   User? firebaseUser = _auth.currentUser;
+  //   await firebaseUser?.reload();
+  //   firebaseUser = _auth.currentUser;
+
+  //   if (firebaseUser != null) {
+      
+  //       user = firebaseUser;
+  //       isloggedin = true;
+      
+  //   }
+  // }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -29,29 +55,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> 
 {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user;
-  bool isloggedin = false;
-  String? email;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // User? user;
+  // bool isloggedin = false;
+  // String? email;
 
-   void initial() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? _email = preferences.getString("email");
-    print('initial');
-  }
-    getUser() async {
-    print('getuser');
-    User? firebaseUser = _auth.currentUser;
-    await firebaseUser?.reload();
-    firebaseUser = _auth.currentUser;
-
-    if (firebaseUser != null) {
-      setState(() {
-        this.user = firebaseUser;
-        this.isloggedin = true;
-      });
-    }
-  }
+  //  void initial() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   String? _email = preferences.getString("email");
+  //   print('initial');
+  // }
+ 
   
   @override
   void initState() {
@@ -59,8 +73,8 @@ class _MyAppState extends State<MyApp>
     super.initState();
 
     // getLoggedInState();
-    getUser();
-    initial();
+    // getUser();
+    // initial();
   }
 
   @override
