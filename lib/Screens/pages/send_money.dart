@@ -1,13 +1,21 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
+import 'package:payment_app/Screens/pages/homepage.dart';
+import 'package:payment_app/theme/theme.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:toast/toast.dart';
+
 
 class SendMoney extends StatefulWidget {
-  final String name;
-  final String avatar;
-  const SendMoney({ Key? key, required this.name, required this.avatar }) : super(key: key);
+  // final String name;
+  // final String avatar;
+  // const SendMoney({ Key? key, required this.name, required this.avatar }) : super(key: key);
 
   @override
   _SendMoneyState createState() => _SendMoneyState();
@@ -15,24 +23,106 @@ class SendMoney extends StatefulWidget {
 
 class _SendMoneyState extends State<SendMoney> {
   var amount = TextEditingController(text: "0.00");
+    Razorpay? razorpay;
+  TextEditingController textEditingController = new TextEditingController();
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    razorpay = new Razorpay();
+
+    razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
+    razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+
+    getAmount();
+
+    _focusNode.addListener(onFocusChanged);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    razorpay!.clear();
+    amount.dispose();
+  }
+
+  Future openCheckout()async{
+    print('open checkout');
+    var options = {
+      "key" : "rzp_test_Zpx9zpp0byhtjD",
+      "amount" : num.parse(amount.text)*100,
+      "name" : "Payment Transaction",
+      "description" : "Sample Payment Transaction",
+      "prefill" : {
+        "contact" : "9876543210",
+        "email" : "estherjenslin@gmail.com"
+      },
+      "external" : {
+        "wallets" : ["paytm"]
+      }
+    };
+
+    try{
+      razorpay!.open(options);
+
+
+    }catch(e){
+      print(e.toString());
+    }
+
+  }
+
+  void handlerPaymentSuccess(){
+    print("Pament success");
+    Toast.show("Pament success");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false);
+    // Toast.show("Pament success", context);
+  }
+
+  void handlerErrorFailure(){
+    print("Pament error");
+    Toast.show("Pament error");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false);
+    // Toast.show("Pament error", context);
+  }
+
+  void handlerExternalWallet(){
+    print("External Wallet");
+    Toast.show("External Wallet");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false);
+    // Toast.show("External Wallet", context);
+  }
+
+    bool _validate = false;
 
   FocusNode _focusNode = new FocusNode();
   TextEditingController _editingController = new TextEditingController();
   bool isFocused = false;
 
   List<String> _feedbacks = [
-    'Awsome 🙌',
-    'Nice 🔥',
-    'Cool 🤩',
-    'Amazing work 👍🏼',
+    'For Banking Loan',
+    'For Grocceries',
+    'For EB Bill',
+    'For Bike Insurance',
   ];
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    _focusNode.addListener(onFocusChanged);
-  }
+  //   _focusNode.addListener(onFocusChanged);
+  // }
 
   void onFocusChanged() {
     setState(() {
@@ -41,10 +131,37 @@ class _SendMoneyState extends State<SendMoney> {
 
     print('focus changed.');
   }
+
+    var detamt;
+  var Total;
+
+  var tranfered;
+
+getAmount() async
+{
+  print('getamount-->pay');
+  DocumentSnapshot variable = await FirebaseFirestore.instance.collection('payment').doc('f13LicFOzzfMeYtVzxfe').get();
+  // doc('MzdflPYy2CCoJI2A2ZgL').get();//only one document value will be get
+  print('Sample Data 2 : ${variable['deptamt']}');//de
+  print('Sample Data 1 : ${variable['totamt']}');
+  setState(() {
+     detamt=variable['totamt'];
+     Total=variable['deptamt'];
+    print('dedamt:${detamt}');
+    
+    // tranfered=variable['totamt']-variable['deptamt'];
+    // print('tranfered:${tranfered}');
+
+    // int sum =(variable['totamt']) - (variable['totamt']);
+    // res = sum.toString();
+    // log('res+$res');
+  });
+}
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Appcolor.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -66,12 +183,14 @@ class _SendMoneyState extends State<SendMoney> {
                   height: 130,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.pink.shade50,
+                    color: Appcolor.secondary,
+                    // color: Colors.pink.shade50,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(widget.avatar)),
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.asset('assets/images/pay5.png',fit: BoxFit.cover,height: 130,width: 130,)
+                    ),
                 ),
               ),
               SizedBox(height: 50,),
@@ -85,7 +204,10 @@ class _SendMoneyState extends State<SendMoney> {
                 from: 30,
                 delay: Duration(milliseconds: 800),
                 duration: Duration(milliseconds: 1000),
-                child: Text(widget.name, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),)),
+                child: Text(
+                  'Sample Money Transaction',
+                  // widget.name, 
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),)),
               SizedBox(height: 20,),
               FadeInUp(
                 from: 40,
@@ -94,7 +216,9 @@ class _SendMoneyState extends State<SendMoney> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
                   child: TextField(
+                    // controller: textEditingController,
                     controller: amount,
+                    
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                     cursorColor: Colors.black,
@@ -102,6 +226,7 @@ class _SendMoneyState extends State<SendMoney> {
                     onSubmitted: (value) {
                       setState(() {
                         amount.text = "\₹" + value + ".00";
+                        // textEditingController.text = "\₹" + value + ".00";
                       });
                     },
                     onTap: () {
@@ -117,6 +242,7 @@ class _SendMoneyState extends State<SendMoney> {
                       ThousandsFormatter()
                     ],
                     decoration: InputDecoration(
+                      errorText: _validate ? 'Value Can\'t Be Empty' : null,
                       hintText: "Enter Amount",
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
                       border: OutlineInputBorder(
@@ -193,10 +319,12 @@ class _SendMoneyState extends State<SendMoney> {
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: Colors.grey.shade200, width: 2),
                             ),
-                            child: Text(_feedbacks[index], style: TextStyle(
-                              color: Colors.grey.shade800,
-                              fontSize: 16
-                            ),),
+                            child: Center(
+                              child: Text(_feedbacks[index], style: TextStyle(
+                                color: Colors.grey.shade800,
+                                fontSize: 16
+                              ),),
+                            ),
                           ),
                         ),
                       );
@@ -212,11 +340,143 @@ class _SendMoneyState extends State<SendMoney> {
                   child: Material(
                     elevation: 5,
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.black,
+                    color: Appcolor.secondary,
                     child: MaterialButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacementNamed('/');
+                      onPressed: ()
+                      {
+                        setState(() {
+                          amount.text.isEmpty ? _validate = true : _validate = false;
+                        });
+
+                        // if(Total<0)
+                        // {
+                        //   log('ifamt cking');
+                        //   Toast.show('Amount less');
+                        // }
+                        // else
+                        // {
+                        //   log('elseamt cking');
+                        //   Map <String,dynamic> data=
+                        //   {
+                        //     "deptamt":amount.text,
+                        //   };
+
+                        //   // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
+                        // // {
+                        // //   print(data);
+                        // //   print("Success!!");
+                        // //   print(data);
+                        // //   openCheckout().then((value) =>
+                        // //    Navigator.of(context).pushAndRemoveUntil(
+                        // //       MaterialPageRoute(builder: (context) => HomePage()),
+                        // //       (route) => false));
+                        // // }
+                        // // )/
+                        
+                        // // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
+                        // // {
+                        // //   print(data);
+                        // //   print("Success!!");
+                        // //   print(data);
+                        // //   openCheckout().then((value) =>
+                        // //    Navigator.of(context).pushAndRemoveUntil(
+                        // //       MaterialPageRoute(builder: (context) => HomePage()),
+                        // //       (route) => false));
+                        // // }
+                        // // )//insert
+
+                        // //update
+                        // FirebaseFirestore.instance.collection('payment').doc('payment_details').update(data).then
+                        // (
+                        //   (data) 
+                        //   {
+                        //     log('successsQQ');
+                        //   // print(data);
+                        //   // print("Success!!");
+                        //   // print(data);
+                        //   openCheckout().then((value) =>
+                        //    Navigator.of(context).pushAndRemoveUntil(
+                        //       MaterialPageRoute(builder: (context) => HomePage()),
+                        //       (route) => false));
+                        // }
+                        // )
+                        // // (
+                        // //   {
+                        // //     'deptamt':'textEditingController.text',
+                        // //     // openCheckout().
+                        // //   }
+                        // // )
+                        
+                        // .catchError((onError)
+                        // {
+                        //   print('error');
+                        // }
+                        // );
+                        // log('processing');
+                        // }
+                        Map <String,dynamic> data=
+                          {
+                            "deptamt":amount.text,
+                          };
+
+                        
+
+                          // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
+                        // {
+                        //   print(data);
+                        //   print("Success!!");
+                        //   print(data);
+                        //   openCheckout().then((value) =>
+                        //    Navigator.of(context).pushAndRemoveUntil(
+                        //       MaterialPageRoute(builder: (context) => HomePage()),
+                        //       (route) => false));
+                        // }
+                        // )/
+                        
+                        // FirebaseFirestore.instance.collection("payment").add(data).then((data) 
+                        // {
+                        //   print(data);
+                        //   print("Success!!");
+                        //   print(data);
+                        //   openCheckout().then((value) =>
+                        //    Navigator.of(context).pushAndRemoveUntil(
+                        //       MaterialPageRoute(builder: (context) => HomePage()),
+                        //       (route) => false));
+                        // }
+                        // )//insert
+
+                        //update
+                        FirebaseFirestore.instance.collection('payment').doc('payment_details').update(data).then
+                        (
+                          (data) 
+                          {
+                            log('successsQQ');
+                          // print(data);
+                          // print("Success!!");
+                          // print(data);
+                          openCheckout().then((value) =>
+                           Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                              (route) => false));
+                        }
+                        )
+                        // (
+                        //   {
+                        //     'deptamt':'textEditingController.text',
+                        //     // openCheckout().
+                        //   }
+                        // )
+                        
+                        .catchError((onError)
+                        {
+                          print('error');
+                        }
+                        );
+                        log('processing');
                       },
+                      // onPressed: () {
+                      //   Navigator.of(context).pushReplacementNamed('/');
+                      // },
                       minWidth: double.infinity,
                       height: 50,
                       child: Text("Send", style: TextStyle(color: Colors.white, fontSize: 16),),

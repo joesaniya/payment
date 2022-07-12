@@ -1,5 +1,9 @@
 
 
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +14,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:payment_app/Screens/login/login_screen.dart';
 import 'package:payment_app/Screens/pages/contact.dart';
 import 'package:payment_app/Screens/pages/pay.dart';
+import 'package:payment_app/Screens/pages/send_money.dart';
 import 'package:payment_app/helpers/dialog_helper.dart';
 import 'package:payment_app/theme/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +36,8 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isloggedin = false;
 
   var amount;
+
+  String? res;
 
   // var _image;
   // File _image;
@@ -89,6 +96,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
     getData();
     // setAmount();
     getAmount();
+    Result();
   }
   
  setAmount() async
@@ -159,6 +167,9 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
   // }
 
   var detamt;
+  var Total;
+
+  var tranfered;
 
 getAmount() async
 {
@@ -169,8 +180,24 @@ getAmount() async
   print('Sample Data 1 : ${variable['totamt']}');
   setState(() {
      detamt=variable['totamt'];
+     Total=variable['deptamt'];
     print('dedamt:${detamt}');
+    
+    // tranfered=variable['totamt']-variable['deptamt'];
+    // print('tranfered:${tranfered}');
+
+    // int sum =(variable['totamt']) - (variable['totamt']);
+    // res = sum.toString();
+    // log('res+$res');
   });
+}
+
+Result() sync*
+{
+  print('result');
+  int sum =detamt - Total;
+    res = sum.toString();
+    log('res+$res');
 }
 
   
@@ -179,8 +206,12 @@ getAmount() async
   Widget build(BuildContext context) {
     return user == null
               ? Scaffold(
-                body: const Center(
-                    child: CircularProgressIndicator(),
+                backgroundColor: Appcolor.background,
+                body: Center(
+                    child: CircularProgressIndicator
+                    (
+                      color: Appcolor.background,
+                    ),
                   ),
               ):
                 AdvancedDrawer(
@@ -244,8 +275,12 @@ getAmount() async
                           fit: BoxFit.cover,
                         )
                       : CircleAvatar(
-                          backgroundColor: Colors.yellow,
-                          child: Text(user!.displayName![0]),
+                          backgroundColor: Appcolor.background,
+                          child: Text(user!.displayName![0],style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Appcolor.secondary,
+                              ),),
                         ),
                   // Image.network(user.displayName[0])
 
@@ -340,7 +375,7 @@ getAmount() async
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Appcolor.background,
         body: CustomScrollView(
           controller: _scrollController,
           slivers: [
@@ -389,13 +424,29 @@ getAmount() async
                 duration: const Duration(milliseconds: 500),
                 child: Column(
                   children: [
-                    Text(
-                      '\₹ 1,840.00',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '\₹',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          // '\₹ 1,840.00',
+                          // '\₹'+detamt??'',
+                          detamt??'',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20,),
                     Container(
@@ -452,7 +503,10 @@ getAmount() async
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                           onPressed: () 
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PayMoney()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => 
+                            SendMoney()
+                            // PayMoney()
+                            ));
                           },
                           child: Text('Send Money', style: TextStyle(color: Colors.black, fontSize: 10),),
                           color: Colors.transparent,
@@ -536,8 +590,9 @@ getAmount() async
                         children: [
                           Text('Today', style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.w600),),
                           SizedBox(width: 10,),
-                          Text('\₹ 1,840.00', 
+                          Text('\₹${detamt}', 
                           style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700,)),
+                          
                         ]
                       ),
                     ),

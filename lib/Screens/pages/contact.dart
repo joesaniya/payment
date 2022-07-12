@@ -139,14 +139,14 @@ class _ContactPageState extends State<ContactPage> {
                     duration: Duration(milliseconds: (index * 100) + 500),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context, 
-                          MaterialPageRoute(
-                            builder: (context) => SendMoney(
-                              name: _contacts[index]['name'], 
-                              avatar: _contacts[index]['avatar']
-                            )
-                          )
-                        );
+                        // Navigator.push(context, 
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SendMoney(
+                        //       name: _contacts[index]['name'], 
+                        //       avatar: _contacts[index]['avatar']
+                        //     )
+                        //   )
+                        // );
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 20),
@@ -225,14 +225,14 @@ class _ContactPageState extends State<ContactPage> {
       duration: Duration(milliseconds: (index * 100) + 500),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, 
-            MaterialPageRoute(
-              builder: (context) => SendMoney(
-                name: _contacts[index]['name'], 
-                avatar: _contacts[index]['avatar']
-              )
-            )
-          );
+          // Navigator.push(context, 
+          //   MaterialPageRoute(
+          //     builder: (context) => SendMoney(
+          //       name: _contacts[index]['name'], 
+          //       avatar: _contacts[index]['avatar']
+          //     )
+          //   )
+          // );
         },
         child: Container(
           margin: EdgeInsets.only(right: 20),
