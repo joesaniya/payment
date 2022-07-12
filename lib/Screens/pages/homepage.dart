@@ -127,14 +127,24 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final _advancedDrawerController = AdvancedDrawerController();
 
-    Future<void> _signOut(BuildContext context) async {
-    print('future signout');
-    await FirebaseAuth.instance.signOut();
-    // Navigator.pushAndRemoveUntil(builder: (context) => WelcomePage());
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-        (route) => false);
-  }
+//     Future _signOut(BuildContext context) async {
+//     print('future signout');
+//     // await FirebaseAuth.instance.signOut();
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//         // prefs.setString('email', _email.toString());
+//     prefs.clear().then((value)async{ 
+//       log(prefs.getString("email").toString())
+// ;              await FirebaseAuth.instance.signOut();
+
+//       Navigator.of(context).pushAndRemoveUntil(
+//         MaterialPageRoute(builder: (context) => LoginScreen()),
+//         (route) => false);}
+//         );
+//     // Navigator.of(context).pushAndRemoveUntil(
+//     //     MaterialPageRoute(builder: (context) => LoginScreen()),
+//     //     (route) => false);
+//   }
+
   // Stream<List<User>> readUsers()=>
   // final docUser=FirebaseFirestore.instance.collection('data').doc('my-id');
 
@@ -154,7 +164,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
     await document.get().then<dynamic>(( DocumentSnapshot snapshot) async{
      setState(() {
        data =snapshot.data;
-       print('data'+data);
+      //  print('data'+data);
      });
     });
  }

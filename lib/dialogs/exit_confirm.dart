@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:payment_app/theme/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Screens/login/login_screen.dart';
 
@@ -10,13 +13,30 @@ class ExitConfirmationDialog extends StatefulWidget {
 }
 
 class _ExitConfirmationDialogState extends State<ExitConfirmationDialog> {
-    Future<void> _signOut(BuildContext context) async {
+  //   Future<void> _signOut(BuildContext context) async {
+  //   print('future signout');
+  //   await FirebaseAuth.instance.signOut();
+  //   // Navigator.pushAndRemoveUntil(builder: (context) => WelcomePage());
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //       MaterialPageRoute(builder: (context) => LoginScreen()),
+  //       (route) => false);
+  // }
+     Future _signOut(BuildContext context) async {
     print('future signout');
-    await FirebaseAuth.instance.signOut();
-    // Navigator.pushAndRemoveUntil(builder: (context) => WelcomePage());
-    Navigator.of(context).pushAndRemoveUntil(
+    // await FirebaseAuth.instance.signOut();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+        // prefs.setString('email', _email.toString());
+    prefs.clear().then((value)async{ 
+      log(prefs.getString("email").toString());              
+      await FirebaseAuth.instance.signOut();
+
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LoginScreen()),
-        (route) => false);
+        (route) => false);}
+        );
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (context) => LoginScreen()),
+    //     (route) => false);
   }
   @override
   Widget build(BuildContext context) {

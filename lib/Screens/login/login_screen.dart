@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         print('try 1');
-        await _auth.signInWithEmailAndPassword(
+        var maillogin=await _auth.signInWithEmailAndPassword(
             email: _email.toString(), password: _password.toString());
+            log(maillogin.toString());
         print('try 2');
 
         print('signin');
@@ -117,6 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
         final UserCredential user =
             await _auth.signInWithCredential(credential);
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('email', googleUser.email.toString());
+        // log(googleAuth.idToken.toString());
+        // log(googleUser.email);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),

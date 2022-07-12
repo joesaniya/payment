@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initial();
   await Firebase.initializeApp();
-await initial();
+
   runApp(
     MyApp()
     // MaterialApp
@@ -24,13 +27,14 @@ late String? _email;
  initial() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
      _email = preferences.getString("email");
-    print('initial');
+    print('initialvoid');
+    log(_email.toString());
   }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-late  User? user;
-  bool isloggedin = false;
-  String? email;
+// final FirebaseAuth _auth = FirebaseAuth.instance;
+// late  User? user;
+//   bool isloggedin = false;
+//   String? email;
 
   //  getUser() async {
   //   print('getuser');
@@ -87,7 +91,7 @@ class _MyAppState extends State<MyApp>
       ),
       // home: WelcomePage(),
       // initialRoute: '/',
-      home: email == null ? Onboard() : HomePage(),
+      home: _email == null ? Onboard() : HomePage(),
 
       
     );
