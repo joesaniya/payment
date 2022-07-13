@@ -14,11 +14,11 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   List<dynamic> _contacts = [
     {
-      'name': 'Maharasi',
+      'name': 'Calvin',
       'avatar': 'assets/images/avatar-1.png',
     },
     {
-      'name': 'Calvin',
+      'name': 'Maharasi',
       'avatar': 'assets/images/avatar-2.png',
     },
     {
@@ -34,7 +34,7 @@ class _ContactPageState extends State<ContactPage> {
       'avatar': 'assets/images/avatar-5.png',
     },
     {
-      'name': 'Jenslin',
+      'name': 'Krishna',
       'avatar': 'assets/images/avatar-6.png',
     }
   ];

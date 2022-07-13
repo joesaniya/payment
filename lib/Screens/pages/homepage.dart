@@ -12,9 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:payment_app/Screens/login/login_screen.dart';
+import 'package:payment_app/Screens/pages/bill.dart';
 import 'package:payment_app/Screens/pages/contact.dart';
 import 'package:payment_app/Screens/pages/pay.dart';
 import 'package:payment_app/Screens/pages/send_money.dart';
+import 'package:payment_app/Screens/pages/shopping.dart';
+import 'package:payment_app/Screens/pages/topup.dart';
 import 'package:payment_app/helpers/dialog_helper.dart';
 import 'package:payment_app/theme/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,7 +78,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
     ['Transfer', Iconsax.export_1, Colors.blue],
     ['Top-up', Iconsax.import, Colors.pink],
     ['Bill', Iconsax.wallet_3, Colors.orange],
-    ['More', Iconsax.more, Colors.green],
+    ['Shopping', Iconsax.shopping_bag, Colors.green],
   ];
 
   List<dynamic> _transactions = [
@@ -584,7 +587,20 @@ getAmount() async
                             child: GestureDetector(
                               onTap: () {
                                 if (_services[index][0] == 'Transfer') { 
+                                  log('transfer');
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()));
+                                }
+                                if (_services[index][0] == 'Top-up') { 
+                                  log('Top-up');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Topup()));
+                                }
+                                if (_services[index][0] == 'Bill') { 
+                                  log('Bill');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Bill()));
+                                }
+                                if (_services[index][0] == 'Shopping') { 
+                                  log('Shopping');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Shopping()));
                                 }
                               },
                               child: Column(

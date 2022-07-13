@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('ERROR'),
-            content: Text(errormessage),
+            content: Text(errormessage,style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600,color: Appcolor.card)),
             backgroundColor: Appcolor.secondary,
             shape:
           RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'))
+                  child: Text('OK',style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)))
             ],
           );
         });
