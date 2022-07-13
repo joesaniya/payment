@@ -54,6 +54,7 @@ dependencies:
   cool_alert: ^1.1.0
   cloud_firestore: ^3.2.1
   fluttertoast: ^8.0.9
+  # shimmer: ^2.0.0
 
 
 dev_dependencies:

@@ -28,6 +28,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  // static const routeName = '/';
   late ScrollController _scrollController;
   bool _isScrolled = false;
 

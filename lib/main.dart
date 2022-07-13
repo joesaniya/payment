@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:payment_app/Screens/pages/homepage.dart';
 import 'package:payment_app/onboard.dart';
-import 'package:payment_app/payAmountdemo.dart';
+import 'package:payment_app/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -13,8 +14,18 @@ Future<void> main() async {
   await initial();
   await Firebase.initializeApp();
 
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    // systemNavigationBarColor: Colors.black,
+    // systemNavigationBarIconBrightness: Brightness.light,
+     statusBarColor: Colors.white,//status bar color
+     statusBarBrightness: Brightness.dark,
+     statusBarIconBrightness: Brightness.dark
+  ));
+
   runApp(
     MyApp()
+    // SplashScreen()
+    
     // MaterialApp
     // (
     //   debugShowCheckedModeBanner: false,
@@ -92,6 +103,15 @@ class _MyAppState extends State<MyApp>
       // home: WelcomePage(),
       // initialRoute: '/',
       home: _email == null ? Onboard() : HomePage(),
+
+      // routes: {
+      //    '/':(ctx) => HomePage()
+
+      //   // // WelcomePage.routeName:(ctx) => WelcomePage(),
+      //   // //  '/':(ctx) => WelcomePage(),
+      //   // HomePage.routeName: (ctx) =>
+      //   //     HomePage(),
+      // },
 
       
     );

@@ -1,6 +1,7 @@
 import 'package:align_positioned/align_positioned.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:payment_app/Screens/contactpay.dart';
 import 'package:payment_app/Screens/pages/send_money.dart';
 
 class ContactPage extends StatefulWidget {
@@ -13,15 +14,15 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   List<dynamic> _contacts = [
     {
-      'name': 'John',
+      'name': 'Maharasi',
       'avatar': 'assets/images/avatar-1.png',
     },
     {
-      'name': 'Samantha',
+      'name': 'Calvin',
       'avatar': 'assets/images/avatar-2.png',
     },
     {
-      'name': 'Mary',
+      'name': 'Emy',
       'avatar': 'assets/images/avatar-3.png',
     },
     {
@@ -29,11 +30,11 @@ class _ContactPageState extends State<ContactPage> {
       'avatar': 'assets/images/avatar-4.png',
     },
     {
-      'name': 'Sara',
+      'name': 'Jensy',
       'avatar': 'assets/images/avatar-5.png',
     },
     {
-      'name': 'Kabir Singh',
+      'name': 'Jenslin',
       'avatar': 'assets/images/avatar-6.png',
     }
   ];
@@ -139,14 +140,14 @@ class _ContactPageState extends State<ContactPage> {
                     duration: Duration(milliseconds: (index * 100) + 500),
                     child: GestureDetector(
                       onTap: () {
-                        // Navigator.push(context, 
-                        //   MaterialPageRoute(
-                        //     builder: (context) => SendMoney(
-                        //       name: _contacts[index]['name'], 
-                        //       avatar: _contacts[index]['avatar']
-                        //     )
-                        //   )
-                        // );
+                        Navigator.push(context, 
+                          MaterialPageRoute(
+                            builder: (context) => ContactPay(
+                              name: _contacts[index]['name'], 
+                              avatar: _contacts[index]['avatar']
+                            )
+                          )
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 20),
@@ -203,7 +204,17 @@ class _ContactPageState extends State<ContactPage> {
                           Spacer(),
                           IconButton(
                             icon: Icon(Icons.arrow_forward_ios, color: Colors.black, size: 15,),
-                            onPressed: () {},
+                            onPressed: () 
+                            {
+                              Navigator.push(context, 
+                                MaterialPageRoute(
+                                  builder: (context) => ContactPay(
+                                    name: _contacts[index]['name'], 
+                                    avatar: _contacts[index]['avatar']
+                                  )
+                                )
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -225,14 +236,14 @@ class _ContactPageState extends State<ContactPage> {
       duration: Duration(milliseconds: (index * 100) + 500),
       child: GestureDetector(
         onTap: () {
-          // Navigator.push(context, 
-          //   MaterialPageRoute(
-          //     builder: (context) => SendMoney(
-          //       name: _contacts[index]['name'], 
-          //       avatar: _contacts[index]['avatar']
-          //     )
-          //   )
-          // );
+          Navigator.push(context, 
+            MaterialPageRoute(
+              builder: (context) => ContactPay(
+                name: _contacts[index]['name'], 
+                avatar: _contacts[index]['avatar']
+              )
+            )
+          );
         },
         child: Container(
           margin: EdgeInsets.only(right: 20),
